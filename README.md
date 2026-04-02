@@ -54,12 +54,6 @@ Or just double-click `index.html` — it works offline with no internet required
 
 ---
 
-## 🌐 Deploy to GitHub Pages (Free, 1 minute)
-
-1. Push to GitHub
-2. **Settings → Pages → Source: main / root**
-3. Live at: `https://Follytechnologies.github.io/axiom-math-visualizer`
-
 ---
 
 ## 📁 Project Structure
