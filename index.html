@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Axiom — Mathematics Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="chalk-dust" id="chalkDust"></div>
+
+  <header>
+    <div class="brand">
+      <div class="brand-name">Axiom</div>
+      <div class="brand-sub">Interactive Mathematics Visualizer</div>
+    </div>
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="grapher">f(x) Grapher</button>
+      <button class="tab-btn" data-tab="complex">Complex Plane</button>
+      <button class="tab-btn" data-tab="fourier">Fourier Series</button>
+      <button class="tab-btn" data-tab="polar">Polar Curves</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ── TAB 1: Function Grapher ── -->
+    <section class="tab-panel active" id="tab-grapher">
+      <div class="panel-layout">
+
+        <aside class="sidebar">
+          <div class="sidebar-title">Functions</div>
+
+          <div class="function-list" id="functionList"></div>
+
+          <button class="add-fn-btn" id="addFnBtn">+ Add Function</button>
+
+          <div class="sidebar-group">
+            <div class="group-label">View Window</div>
+            <div class="range-row">
+              <label>X</label>
+              <input type="number" id="xMin" value="-10" class="range-input"/>
+              <span>to</span>
+              <input type="number" id="xMax" value="10" class="range-input"/>
+            </div>
+            <div class="range-row">
+              <label>Y</label>
+              <input type="number" id="yMin" value="-6" class="range-input"/>
+              <span>to</span>
+              <input type="number" id="yMax" value="6" class="range-input"/>
+            </div>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Presets</div>
+            <div class="preset-grid">
+              <button class="preset-btn" data-fn="sin(x)">sin(x)</button>
+              <button class="preset-btn" data-fn="cos(x)">cos(x)</button>
+              <button class="preset-btn" data-fn="x^2">x²</button>
+              <button class="preset-btn" data-fn="x^3-3*x">x³−3x</button>
+              <button class="preset-btn" data-fn="1/x">1/x</button>
+              <button class="preset-btn" data-fn="sqrt(abs(x))">√|x|</button>
+              <button class="preset-btn" data-fn="sin(x)/x">sinc</button>
+              <button class="preset-btn" data-fn="exp(-x^2)">e^−x²</button>
+            </div>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Options</div>
+            <label class="checkbox-row">
+              <input type="checkbox" id="showGrid" checked/> Show grid
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="showAxes" checked/> Show axes
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="animateDraw" checked/> Animate draw
+            </label>
+          </div>
+        </aside>
+
+        <div class="canvas-area">
+          <canvas id="grapherCanvas"></canvas>
+          <div class="canvas-coords" id="grapherCoords"></div>
+          <div class="canvas-hint">Scroll to zoom · Drag to pan · Hover for coordinates</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── TAB 2: Complex Plane ── -->
+    <section class="tab-panel" id="tab-complex">
+      <div class="panel-layout">
+
+        <aside class="sidebar">
+          <div class="sidebar-title">Complex Function</div>
+
+          <div class="sidebar-group">
+            <div class="group-label">f(z) =</div>
+            <input type="text" id="complexFn" class="fn-input" value="z^2" placeholder="e.g. z^2, z^3+1, 1/z"/>
+            <button class="apply-btn" id="applyComplex">Visualize</button>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Visualization</div>
+            <label class="checkbox-row">
+              <input type="radio" name="complexMode" value="domain" checked/> Domain coloring
+            </label>
+            <label class="checkbox-row">
+              <input type="radio" name="complexMode" value="grid"/> Grid mapping
+            </label>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Presets</div>
+            <div class="preset-grid">
+              <button class="preset-btn" data-complex="z^2">z²</button>
+              <button class="preset-btn" data-complex="z^3">z³</button>
+              <button class="preset-btn" data-complex="1/z">1/z</button>
+              <button class="preset-btn" data-complex="z^2+c">z²+c</button>
+              <button class="preset-btn" data-complex="sin(z)">sin(z)</button>
+              <button class="preset-btn" data-complex="exp(z)">eˣ</button>
+            </div>
+          </div>
+
+          <div class="info-card" id="complexInfo">
+            <div class="info-title">About Domain Coloring</div>
+            <div class="info-body">Hue encodes the <em>argument</em> of f(z). Brightness encodes the <em>modulus</em>. Zeros appear black, poles appear white.</div>
+          </div>
+        </aside>
+
+        <div class="canvas-area">
+          <canvas id="complexCanvas"></canvas>
+          <div class="canvas-coords" id="complexCoords"></div>
+          <div class="canvas-hint">Hover to see z and f(z) values</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── TAB 3: Fourier Series ── -->
+    <section class="tab-panel" id="tab-fourier">
+      <div class="panel-layout">
+
+        <aside class="sidebar">
+          <div class="sidebar-title">Fourier Series</div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Wave Shape</div>
+            <div class="preset-grid">
+              <button class="preset-btn active-preset" data-wave="square">Square</button>
+              <button class="preset-btn" data-wave="sawtooth">Sawtooth</button>
+              <button class="preset-btn" data-wave="triangle">Triangle</button>
+              <button class="preset-btn" data-wave="pulse">Pulse</button>
+            </div>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Terms (N) = <span id="termsVal">5</span></div>
+            <input type="range" id="termsSlider" min="1" max="50" value="5" class="slider"/>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Speed = <span id="speedVal">1.0</span>x</div>
+            <input type="range" id="speedSlider" min="1" max="10" value="5" step="1" class="slider"/>
+          </div>
+
+          <div class="sidebar-group">
+            <label class="checkbox-row">
+              <input type="checkbox" id="showCircles" checked/> Show rotating circles
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="showPath" checked/> Show trace path
+            </label>
+          </div>
+
+          <div class="info-card">
+            <div class="info-title">What you're seeing</div>
+            <div class="info-body">Each circle represents one harmonic. The sum of all rotating vectors traces the target waveform. More terms = closer approximation.</div>
+          </div>
+        </aside>
+
+        <div class="canvas-area fourier-area">
+          <canvas id="fourierCanvas"></canvas>
+          <canvas id="waveCanvas"></canvas>
+          <div class="canvas-hint">Increase N to add more harmonics</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── TAB 4: Polar Curves ── -->
+    <section class="tab-panel" id="tab-polar">
+      <div class="panel-layout">
+
+        <aside class="sidebar">
+          <div class="sidebar-title">Polar Curve</div>
+
+          <div class="sidebar-group">
+            <div class="group-label">r(θ) =</div>
+            <input type="text" id="polarFn" class="fn-input" value="1 + cos(theta)" placeholder="e.g. 1+cos(theta)"/>
+            <button class="apply-btn" id="applyPolar">Draw</button>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">θ range: 0 to <span id="thetaVal">2π</span></div>
+            <input type="range" id="thetaSlider" min="1" max="8" value="2" step="0.5" class="slider"/>
+          </div>
+
+          <div class="sidebar-group">
+            <label class="checkbox-row">
+              <input type="checkbox" id="animatePolar" checked/> Animate draw
+            </label>
+          </div>
+
+          <div class="sidebar-group">
+            <div class="group-label">Presets</div>
+            <div class="preset-grid">
+              <button class="preset-btn" data-polar="1+cos(theta)">Cardioid</button>
+              <button class="preset-btn" data-polar="sin(2*theta)">Rose (4)</button>
+              <button class="preset-btn" data-polar="sin(3*theta)">Rose (3)</button>
+              <button class="preset-btn" data-polar="theta">Spiral</button>
+              <button class="preset-btn" data-polar="1/theta">Hyperbolic</button>
+              <button class="preset-btn" data-polar="2+sin(5*theta)">Star</button>
+            </div>
+          </div>
+        </aside>
+
+        <div class="canvas-area">
+          <canvas id="polarCanvas"></canvas>
+          <div class="canvas-coords" id="polarCoords"></div>
+          <div class="canvas-hint">Polar coordinates: (r, θ)</div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>Axiom · Pure Mathematics Visualizer · No dependencies</span>
+    <span>Ahmad Portfolio Project</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
